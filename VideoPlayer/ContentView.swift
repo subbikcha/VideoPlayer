@@ -8,17 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var navigationCoordinator: NavigationCoordinator = NavigationCoordinator()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack(path: $navigationCoordinator.paths) {
+            VideosListView()
+                .navigationDestination(for: Path.self) { path in
+                    switch path {
+                    case Path.videoPlay:
+                        VideoPlayerPage()
+                    case Path.videoList:
+                        VideosListView()
+                    }
+                }
         }
-        .padding()
+        .environmentObject(navigationCoordinator)
     }
-}
-
-#Preview {
-    ContentView()
 }

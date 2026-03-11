@@ -14,6 +14,20 @@
 		38AA7D3B2F6148AB00923217 /* VideoPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D3A2F6148AB00923217 /* VideoPlayerTests.swift */; };
 		38AA7D452F6148AB00923217 /* VideoPlayerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D442F6148AB00923217 /* VideoPlayerUITests.swift */; };
 		38AA7D472F6148AB00923217 /* VideoPlayerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D462F6148AB00923217 /* VideoPlayerUITestsLaunchTests.swift */; };
+		38AA7D552F6157CE00923217 /* VideoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D542F6157CE00923217 /* VideoResponse.swift */; };
+		38AA7D572F6157EB00923217 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D562F6157EB00923217 /* Video.swift */; };
+		38AA7D5C2F61594600923217 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D5B2F61594600923217 /* Endpoint.swift */; };
+		38AA7D5F2F61598D00923217 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D5E2F61598D00923217 /* Constants.swift */; };
+		38AA7D612F615CE200923217 /* VideosRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D602F615CE200923217 /* VideosRepository.swift */; };
+		38AA7D632F615D1000923217 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D622F615D1000923217 /* NetworkService.swift */; };
+		38AA7D662F615E4600923217 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D652F615E4600923217 /* CustomError.swift */; };
+		38AA7D6C2F6162E900923217 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D6B2F6162E900923217 /* NavigationCoordinator.swift */; };
+		38AA7D6E2F61650200923217 /* VideosListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D6D2F61650200923217 /* VideosListView.swift */; };
+		38AA7D722F61673B00923217 /* VideoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D712F61673B00923217 /* VideoListViewModel.swift */; };
+		38AA7D742F617BF900923217 /* VideoListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D732F617BF900923217 /* VideoListItemView.swift */; };
+		38AA7D772F617DEB00923217 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 38AA7D762F617DEB00923217 /* NukeUI */; };
+		38AA7D7B2F6181E300923217 /* VideoPlayerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D7A2F6181E300923217 /* VideoPlayerPage.swift */; };
+		38AA7D7F2F61ABC500923217 /* PaginationParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D7E2F61ABC500923217 /* PaginationParams.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +58,19 @@
 		38AA7D402F6148AB00923217 /* VideoPlayerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VideoPlayerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		38AA7D442F6148AB00923217 /* VideoPlayerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerUITests.swift; sourceTree = "<group>"; };
 		38AA7D462F6148AB00923217 /* VideoPlayerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		38AA7D542F6157CE00923217 /* VideoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoResponse.swift; sourceTree = "<group>"; };
+		38AA7D562F6157EB00923217 /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
+		38AA7D5B2F61594600923217 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		38AA7D5E2F61598D00923217 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		38AA7D602F615CE200923217 /* VideosRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosRepository.swift; sourceTree = "<group>"; };
+		38AA7D622F615D1000923217 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		38AA7D652F615E4600923217 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
+		38AA7D6B2F6162E900923217 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
+		38AA7D6D2F61650200923217 /* VideosListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosListView.swift; sourceTree = "<group>"; };
+		38AA7D712F61673B00923217 /* VideoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListViewModel.swift; sourceTree = "<group>"; };
+		38AA7D732F617BF900923217 /* VideoListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListItemView.swift; sourceTree = "<group>"; };
+		38AA7D7A2F6181E300923217 /* VideoPlayerPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerPage.swift; sourceTree = "<group>"; };
+		38AA7D7E2F61ABC500923217 /* PaginationParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationParams.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38AA7D772F617DEB00923217 /* NukeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +122,14 @@
 		38AA7D282F6148A900923217 /* VideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				38AA7D6A2F6162BE00923217 /* Coodinators */,
+				38AA7D692F61629400923217 /* Views */,
+				38AA7D582F61592200923217 /* ViewModels */,
+				38AA7D5A2F61593900923217 /* Repository */,
+				38AA7D592F61592B00923217 /* Service */,
+				38AA7D532F6157BD00923217 /* Models */,
+				38AA7D642F615E3500923217 /* Errors */,
+				38AA7D5D2F61598200923217 /* Helpers */,
 				38AA7D292F6148A900923217 /* VideoPlayerApp.swift */,
 				38AA7D2B2F6148A900923217 /* ContentView.swift */,
 				38AA7D2D2F6148AA00923217 /* Assets.xcassets */,
@@ -127,6 +163,75 @@
 			path = VideoPlayerUITests;
 			sourceTree = "<group>";
 		};
+		38AA7D532F6157BD00923217 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				38AA7D542F6157CE00923217 /* VideoResponse.swift */,
+				38AA7D562F6157EB00923217 /* Video.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		38AA7D582F61592200923217 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				38AA7D712F61673B00923217 /* VideoListViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		38AA7D592F61592B00923217 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				38AA7D5B2F61594600923217 /* Endpoint.swift */,
+				38AA7D622F615D1000923217 /* NetworkService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		38AA7D5A2F61593900923217 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				38AA7D602F615CE200923217 /* VideosRepository.swift */,
+				38AA7D7E2F61ABC500923217 /* PaginationParams.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		38AA7D5D2F61598200923217 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				38AA7D5E2F61598D00923217 /* Constants.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		38AA7D642F615E3500923217 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				38AA7D652F615E4600923217 /* CustomError.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
+		38AA7D692F61629400923217 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				38AA7D6D2F61650200923217 /* VideosListView.swift */,
+				38AA7D732F617BF900923217 /* VideoListItemView.swift */,
+				38AA7D7A2F6181E300923217 /* VideoPlayerPage.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		38AA7D6A2F6162BE00923217 /* Coodinators */ = {
+			isa = PBXGroup;
+			children = (
+				38AA7D6B2F6162E900923217 /* NavigationCoordinator.swift */,
+			);
+			path = Coodinators;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -143,6 +248,9 @@
 			dependencies = (
 			);
 			name = VideoPlayer;
+			packageProductDependencies = (
+				38AA7D762F617DEB00923217 /* NukeUI */,
+			);
 			productName = VideoPlayer;
 			productReference = 38AA7D262F6148A900923217 /* VideoPlayer.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +323,9 @@
 				Base,
 			);
 			mainGroup = 38AA7D1D2F6148A900923217;
+			packageReferences = (
+				38AA7D752F617DEA00923217 /* XCRemoteSwiftPackageReference "Nuke" */,
+			);
 			productRefGroup = 38AA7D272F6148A900923217 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -257,8 +368,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38AA7D612F615CE200923217 /* VideosRepository.swift in Sources */,
 				38AA7D2C2F6148A900923217 /* ContentView.swift in Sources */,
+				38AA7D6E2F61650200923217 /* VideosListView.swift in Sources */,
+				38AA7D7B2F6181E300923217 /* VideoPlayerPage.swift in Sources */,
+				38AA7D632F615D1000923217 /* NetworkService.swift in Sources */,
+				38AA7D742F617BF900923217 /* VideoListItemView.swift in Sources */,
+				38AA7D572F6157EB00923217 /* Video.swift in Sources */,
+				38AA7D552F6157CE00923217 /* VideoResponse.swift in Sources */,
+				38AA7D7F2F61ABC500923217 /* PaginationParams.swift in Sources */,
+				38AA7D722F61673B00923217 /* VideoListViewModel.swift in Sources */,
+				38AA7D5F2F61598D00923217 /* Constants.swift in Sources */,
 				38AA7D2A2F6148A900923217 /* VideoPlayerApp.swift in Sources */,
+				38AA7D662F615E4600923217 /* CustomError.swift in Sources */,
+				38AA7D6C2F6162E900923217 /* NavigationCoordinator.swift in Sources */,
+				38AA7D5C2F61594600923217 /* Endpoint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,6 +706,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		38AA7D752F617DEA00923217 /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.9.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		38AA7D762F617DEB00923217 /* NukeUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 38AA7D752F617DEA00923217 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 38AA7D1E2F6148A900923217 /* Project object */;
 }
