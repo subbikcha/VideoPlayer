@@ -10,7 +10,8 @@ import Foundation
 
 class VideoListViewModel: ObservableObject {
     @Published var videos: [Video] = []
-    @Published var showError: Bool = false
+    @Published var showInitialError = false
+    @Published var showPaginationError = false
     @Published var loading: Bool = true
     var hasMore: Bool = false
     @Published var isNextPageLoading = false
@@ -39,7 +40,7 @@ class VideoListViewModel: ObservableObject {
             self.perPage = nextPageParams?.perPage
             hasMore = videosList.nextPage != nil
         } catch (let error) {
-            showError = true
+            showInitialError = true
             errorMessage = error.localizedDescription
         }
     }
@@ -60,7 +61,7 @@ class VideoListViewModel: ObservableObject {
                 self.perPage = nextPageParams?.perPage
                 hasMore = videosList.nextPage != nil
             } catch (let error) {
-                showError = true
+                showPaginationError = true
                 errorMessage = error.localizedDescription
             }
         }

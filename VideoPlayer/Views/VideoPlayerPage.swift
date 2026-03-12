@@ -13,6 +13,7 @@ struct VideoPlayerPage: View {
     
     @StateObject var viewModel: VideoPlayerViewModel
     @State private var player = AVPlayer()
+    @State private var playerItemObserver: NSKeyValueObservation?
     
     var body: some View {
         VStack(spacing: 0) {
@@ -20,27 +21,71 @@ struct VideoPlayerPage: View {
                 VideoPlayer(player: player)
                     .aspectRatio(16/9, contentMode: .fit)
                     .onAppear {
-                        playCurrentVideo()
-                    }
+                         playCurrentVideo()
+                     }
+
+                if viewModel.isVideoLoading {
+                    loadingView
+                }
+                
+                if viewModel.videoError {
+                    errorView
+                 }
+
                 toggleArrow
                     .padding(.trailing, 16)
                     .padding(.bottom, 16)
             }
             
             if viewModel.showUpNext {
-                VStack(alignment: .leading) {
-                    
-                    Text("Up Next")
-                        .font(.headline)
-                        .padding(.horizontal)
-                    nextVideosCarousel
-                }
-                .padding(.top, 10)
-                .background(.ultraThinMaterial)
-                .transition(.move(edge: .bottom))
+                showUpNextView
             }
         }
         .animation(.easeInOut(duration: 0.25), value: viewModel.showUpNext)
+    }
+    
+}
+
+private extension VideoPlayerPage {
+    private var loadingView: some View {
+        ZStack {
+            Color.black
+            ProgressView()
+                .scaleEffect(1.5)
+                .tint(.white)
+        }
+        .aspectRatio(16/9, contentMode: .fit)
+    }
+    
+    private var errorView: some View {
+        VStack(spacing: 10) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.largeTitle)
+                .foregroundColor(.white)
+            Text("Failed to play video")
+                .foregroundColor(.white)
+            Button("Retry") {
+                playCurrentVideo()
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 8)
+            .background(.white)
+            .clipShape(Capsule())
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.black)
+    }
+    
+    private var showUpNextView: some View {
+        VStack(alignment: .leading) {
+            Text("Up Next")
+                .font(.headline)
+                .padding(.horizontal)
+            nextVideosCarousel
+        }
+        .padding(.top, 10)
+        .background(.ultraThinMaterial)
+        .transition(.move(edge: .bottom))
     }
     
     private var toggleArrow: some View {
@@ -110,15 +155,34 @@ struct VideoPlayerPage: View {
 
 private extension VideoPlayerPage {
     func playCurrentVideo() {
-        guard let url = viewModel.getVideoUrl() else { return }
+        NotificationCenter.default.removeObserver(self)
+        guard let url = viewModel.getVideoUrl() else {
+            viewModel.videoError = true
+            return
+        }
+        viewModel.isVideoLoading = true
+        viewModel.videoError = false
         let item = AVPlayerItem(url: url)
         player.replaceCurrentItem(with: item)
+        playerItemObserver = player.observe(\.timeControlStatus, options: [.new]) { player, _ in
+            DispatchQueue.main.async {
+
+                if player.timeControlStatus == .playing {
+                    viewModel.isVideoLoading = false
+                }
+
+                if player.timeControlStatus == .waitingToPlayAtSpecifiedRate {
+                    viewModel.isVideoLoading = true
+                }
+            }
+        }
         NotificationCenter.default.addObserver(
-            forName: .AVPlayerItemDidPlayToEndTime,
+            forName: .AVPlayerItemFailedToPlayToEndTime,
             object: item,
             queue: .main
         ) { _ in
-            playNextVideo()
+            viewModel.videoError = true
+            viewModel.isVideoLoading = false
         }
         player.play()
     }

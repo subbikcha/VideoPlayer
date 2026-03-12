@@ -12,6 +12,8 @@ class VideoPlayerViewModel: ObservableObject {
     @Published var videos: [Video]
     @Published var currentIndex: Int
     @Published var showUpNext: Bool = false
+    @Published var isVideoLoading = false
+    @Published var videoError = false
 
     init(videos: [Video], selectedIndex: Int) {
         self.videos = videos

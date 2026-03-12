@@ -15,9 +15,23 @@ struct VideosListView: View {
     
     var body: some View {
         VStack {
+            
             if viewModel.loading {
+                
                 ProgressView()
+                
+            } else if viewModel.showInitialError {
+                
+                ErrorScreen(
+                    message: viewModel.errorMessage
+                ) {
+                    Task {
+                        await viewModel.getVideosInitial()
+                    }
+                }
+                
             } else {
+                
                 listView
             }
         }
@@ -50,6 +64,20 @@ struct VideosListView: View {
             }
             if viewModel.isNextPageLoading {
                 ProgressView().listRowSeparator(.hidden)
+            }
+            
+            if viewModel.showPaginationError {
+                VStack {
+                    Text("Failed to load more videos")
+                    Button("Retry") {
+                        Task {
+                            await viewModel.loadMoreIfNeeded(
+                                index: viewModel.videos.count - 2
+                            )
+                        }
+                    }
+                }
+                .padding()
             }
         }
         .padding(.horizontal, 6)
