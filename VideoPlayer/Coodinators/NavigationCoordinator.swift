@@ -9,15 +9,15 @@ import Foundation
 import SwiftUI
 
 enum Path: Hashable {
-    case videoPlay
+    case videoPlay([Video], Int)
     case videoList
 }
 
 class NavigationCoordinator: ObservableObject {
     @Published var paths: NavigationPath = NavigationPath()
 
-    func goToPlayVideoPage() {
-        paths.append(Path.videoPlay)
+    func goToPlayVideoPage(videoList: [Video], selectedIndex: Int) {
+        paths.append(Path.videoPlay(videoList, selectedIndex))
     }
 
     func goToVideoListPage() {

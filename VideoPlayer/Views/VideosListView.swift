@@ -23,8 +23,10 @@ struct VideosListView: View {
         }
         .ignoresSafeArea()
         .onAppear {
-            Task {
-                await viewModel.getVideosInitial()
+            if viewModel.videos.isEmpty {
+                Task {
+                    await viewModel.getVideosInitial()
+                }
             }
         }
     }
@@ -32,26 +34,25 @@ struct VideosListView: View {
     
     @ViewBuilder
     var listView: some View {
-        List {
+        ScrollView {
             LazyVGrid(columns: gridItems) {
-                ForEach(viewModel.videos, id: \.id) { video in
+                ForEach(Array(viewModel.videos.enumerated()), id: \.element.id) { index, video in
                     listItemView(thumbNail: video.image,
                                  videoGrapherName: video.user.name,
                                  duration: video.duration,
-                                 index: video.id)
-                }
-            }
-            if viewModel.hasMore {
-                ProgressView()
-                    .frame(maxWidth: .infinity)
+                                 index: index)
                     .onAppear {
                         Task {
-                            await viewModel.loadMoreIfNeeded()
+                            await viewModel.loadMoreIfNeeded(index: index)
                         }
                     }
+                }
+            }
+            if viewModel.isNextPageLoading {
+                ProgressView().listRowSeparator(.hidden)
             }
         }
-        .listStyle(.plain)
+        .padding(.horizontal, 6)
     }
     
     @ViewBuilder
@@ -60,8 +61,9 @@ struct VideosListView: View {
                            videoGrapherName: videoGrapherName,
                            duration: duration)
         .onTapGesture {
-            coordinator.goToPlayVideoPage()
+            let videosForPlayer = viewModel.videos
+            coordinator.goToPlayVideoPage(videoList: videosForPlayer, selectedIndex: index)
         }
+        
     }
-
 }

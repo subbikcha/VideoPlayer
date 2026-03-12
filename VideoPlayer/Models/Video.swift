@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Video: Codable, Identifiable {
+struct Video: Codable, Identifiable, Hashable {
     let id: Int
     let width: Int
     let height: Int
@@ -27,12 +27,12 @@ struct Video: Codable, Identifiable {
     }
 }
 
-struct User: Codable {
+struct User: Codable, Hashable {
     let id: Int
     let name: String
 }
 
-struct VideoFile: Codable {
+struct VideoFile: Codable, Hashable {
     let id: Int
     let quality: String
     let fileType: String

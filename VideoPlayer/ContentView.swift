@@ -15,8 +15,11 @@ struct ContentView: View {
             VideosListView()
                 .navigationDestination(for: Path.self) { path in
                     switch path {
-                    case Path.videoPlay:
-                        VideoPlayerPage()
+                    case Path.videoPlay(let videos, let index):
+                        VideoPlayerPage(viewModel: VideoPlayerViewModel(
+                            videos: videos,
+                            selectedIndex: index
+                        ))
                     case Path.videoList:
                         VideosListView()
                     }

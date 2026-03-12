@@ -28,6 +28,7 @@
 		38AA7D772F617DEB00923217 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 38AA7D762F617DEB00923217 /* NukeUI */; };
 		38AA7D7B2F6181E300923217 /* VideoPlayerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D7A2F6181E300923217 /* VideoPlayerPage.swift */; };
 		38AA7D7F2F61ABC500923217 /* PaginationParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D7E2F61ABC500923217 /* PaginationParams.swift */; };
+		38AA7D812F61E79A00923217 /* VideoPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA7D802F61E79A00923217 /* VideoPlayerViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		38AA7D732F617BF900923217 /* VideoListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListItemView.swift; sourceTree = "<group>"; };
 		38AA7D7A2F6181E300923217 /* VideoPlayerPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerPage.swift; sourceTree = "<group>"; };
 		38AA7D7E2F61ABC500923217 /* PaginationParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationParams.swift; sourceTree = "<group>"; };
+		38AA7D802F61E79A00923217 /* VideoPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				38AA7D712F61673B00923217 /* VideoListViewModel.swift */,
+				38AA7D802F61E79A00923217 /* VideoPlayerViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				38AA7D6E2F61650200923217 /* VideosListView.swift in Sources */,
 				38AA7D7B2F6181E300923217 /* VideoPlayerPage.swift in Sources */,
 				38AA7D632F615D1000923217 /* NetworkService.swift in Sources */,
+				38AA7D812F61E79A00923217 /* VideoPlayerViewModel.swift in Sources */,
 				38AA7D742F617BF900923217 /* VideoListItemView.swift in Sources */,
 				38AA7D572F6157EB00923217 /* Video.swift in Sources */,
 				38AA7D552F6157CE00923217 /* VideoResponse.swift in Sources */,
