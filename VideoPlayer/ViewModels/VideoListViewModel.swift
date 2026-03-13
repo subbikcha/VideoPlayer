@@ -12,7 +12,7 @@ class VideoListViewModel: ObservableObject {
     @Published var videos: [Video] = []
     @Published var showInitialError = false
     @Published var showPaginationError = false
-    @Published var loading: Bool = true
+    @Published var isLoading: Bool = true
     var hasMore: Bool = false
     @Published var isNextPageLoading = false
     var errorMessage: String = ""
@@ -28,9 +28,9 @@ class VideoListViewModel: ObservableObject {
     
     @MainActor
     func getVideosInitial() async {
-        loading = true
+        isLoading = true
         defer {
-            loading = false
+            isLoading = false
         }
         do {
             let videosList = try await repository.getVideos(pagination: PaginationParams(page: page, perPage: perPage))
@@ -47,7 +47,7 @@ class VideoListViewModel: ObservableObject {
     
     @MainActor
     func loadMoreIfNeeded(index: Int) async {
-        if index == videos.count - 2 {
+        if index == videos.count - Constants.paginationPrefetchOffset {
             guard hasMore else { return }
             isNextPageLoading = true
             defer {

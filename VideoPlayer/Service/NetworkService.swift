@@ -41,9 +41,7 @@ extension NetworkService {
         var request = try URLRequest(url: endpoint.url)
         
         headers.forEach { key, value in
-            if let value = value as? String {
-                request.setValue(value, forHTTPHeaderField: key)
-            }
+            request.setValue(value, forHTTPHeaderField: key)
         }
         
         request.httpMethod = Constants.get
@@ -76,13 +74,13 @@ extension NetworkService {
         
         switch httpResponse.statusCode {
             
-        case 200..<300:
+        case Constants.httpSuccessRange:
             return
             
-        case 400..<500:
+        case Constants.httpClientErrorRange:
             throw CustomError.clientError(httpResponse.statusCode)
             
-        case 500..<600:
+        case Constants.httpServerErrorRange:
             throw CustomError.serverError(httpResponse.statusCode)
             
         default:

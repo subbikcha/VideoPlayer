@@ -7,7 +7,7 @@
 
 import Foundation
 
-typealias Header = [String: Any]
+typealias Header = [String: String]
 
 struct Endpoint {
     let path: String
@@ -37,7 +37,7 @@ extension Endpoint {
     }
     
     static var header: Header {
-        return ["Content-Type": "application/json"]
+        return [Constants.contentTypeKey: Constants.contentTypeJSON]
     }
 }
 

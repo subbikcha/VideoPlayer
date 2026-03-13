@@ -12,14 +12,25 @@ struct Constants {
     static let scheme = "https"
 }
 
-//Endpoints
 extension Constants {
     static let videos = "/videos/popular"
     static let pageQueryItemKey = "page"
     static let perPageQueryItemKey = "per_page"
 }
 
-//Http methods
 extension Constants {
     static let get = "GET"
+    static let contentTypeKey = "Content-Type"
+    static let contentTypeJSON = "application/json"
+}
+
+extension Constants {
+    static let preferredVideoQuality = "hd"
+    static let paginationPrefetchOffset = 2
+}
+
+extension Constants {
+    static let httpSuccessRange = 200..<300
+    static let httpClientErrorRange = 400..<500
+    static let httpServerErrorRange = 500..<600
 }

@@ -24,7 +24,7 @@ class VideoPlayerViewModel: ObservableObject {
         videos[currentIndex]
     }
     
-    func toggleShowUp() {
+    func toggleUpNext() {
         showUpNext.toggle()
     }
 
@@ -43,7 +43,7 @@ class VideoPlayerViewModel: ObservableObject {
     
     func getVideoUrl() -> URL? {
         guard let url =
-                currentVideo.videoFiles.first(where: { $0.quality == "hd" })?.link
+                currentVideo.videoFiles.first(where: { $0.quality == Constants.preferredVideoQuality })?.link
                 ?? currentVideo.videoFiles.first?.link else { return nil }
         return url
     }

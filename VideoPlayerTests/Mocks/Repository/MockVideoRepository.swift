@@ -13,6 +13,7 @@ class MockVideosRepository: VideosRepositoryProtocol {
     var response: VideoResponse?
     var error: Error?
     var getVideosCalled = false
+    var extractedPagination: PaginationParams? = PaginationParams(page: 2, perPage: 10)
 
     func getVideos(pagination: PaginationParams?) async throws -> VideoResponse {
 
@@ -26,6 +27,6 @@ class MockVideosRepository: VideosRepositoryProtocol {
     }
 
     func extractPagination(from url: String?) -> PaginationParams? {
-        return PaginationParams(page: 2, perPage: 10)
+        return extractedPagination
     }
 }

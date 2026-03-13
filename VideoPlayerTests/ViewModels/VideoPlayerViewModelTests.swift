@@ -37,16 +37,16 @@ final class VideoPlayerViewModelTests: XCTestCase {
         XCTAssertEqual(sut.currentVideo.id, 20)
     }
 
-    func testToggleShowUp_togglesValue() {
+    func testToggleUpNext_togglesValue() {
         sut = VideoPlayerViewModel(videos: [Video.mock(id: 1)], selectedIndex: 0)
 
         XCTAssertFalse(sut.showUpNext)
 
-        sut.toggleShowUp()
+        sut.toggleUpNext()
 
         XCTAssertTrue(sut.showUpNext)
 
-        sut.toggleShowUp()
+        sut.toggleUpNext()
 
         XCTAssertFalse(sut.showUpNext)
     }
@@ -78,6 +78,21 @@ final class VideoPlayerViewModelTests: XCTestCase {
 
         XCTAssertEqual(result.count, 1)
         XCTAssertEqual(result.first?.id, 2)
+    }
+
+    func testNextVideos_whenFirstVideo_returnsAll() {
+        let videos = [
+            Video.mock(id: 1),
+            Video.mock(id: 2),
+            Video.mock(id: 3)
+        ]
+
+        sut = VideoPlayerViewModel(videos: videos, selectedIndex: 0)
+
+        let result = sut.nextVideos
+
+        XCTAssertEqual(result.count, 3)
+        XCTAssertEqual(result.first?.id, 1)
     }
 
     func testPlayNextVideo_movesToNextIndex() {
@@ -122,7 +137,7 @@ final class VideoPlayerViewModelTests: XCTestCase {
 
     func testGetVideoUrl_returnsHDVideo() {
 
-        let videoFile = VideoFile.mock(quality: "hd")
+        let videoFile = VideoFile.mock(quality: Constants.preferredVideoQuality)
 
         let video = Video.mock(
             id: 1,
@@ -134,6 +149,20 @@ final class VideoPlayerViewModelTests: XCTestCase {
         let url = sut.getVideoUrl()
 
         XCTAssertEqual(url, videoFile.link)
+    }
+
+    func testGetVideoUrl_prefersHDOverSD() {
+
+        let sdFile = VideoFile.mock(id: 1, quality: "sd", link: URL(string: "https://test.com/sd.mp4")!)
+        let hdFile = VideoFile.mock(id: 2, quality: Constants.preferredVideoQuality, link: URL(string: "https://test.com/hd.mp4")!)
+
+        let video = Video.mock(id: 1, videoFiles: [sdFile, hdFile])
+
+        sut = VideoPlayerViewModel(videos: [video], selectedIndex: 0)
+
+        let url = sut.getVideoUrl()
+
+        XCTAssertEqual(url, hdFile.link)
     }
 
     func testGetVideoUrl_fallbackToFirstVideo() {
@@ -152,7 +181,7 @@ final class VideoPlayerViewModelTests: XCTestCase {
         XCTAssertEqual(url, videoFile.link)
     }
 
-    func testGetVideoUrl_whenNoVideos_returnsNil() {
+    func testGetVideoUrl_whenNoVideoFiles_returnsNil() {
 
         let video = Video.mock(id: 1, videoFiles: [])
 
@@ -161,5 +190,21 @@ final class VideoPlayerViewModelTests: XCTestCase {
         let url = sut.getVideoUrl()
 
         XCTAssertNil(url)
+    }
+
+    func testCurrentVideo_afterPlayNext_returnsCorrectVideo() {
+        let videos = [
+            Video.mock(id: 10),
+            Video.mock(id: 20),
+            Video.mock(id: 30)
+        ]
+
+        sut = VideoPlayerViewModel(videos: videos, selectedIndex: 0)
+
+        XCTAssertEqual(sut.currentVideo.id, 10)
+
+        sut.playNextVideo()
+
+        XCTAssertEqual(sut.currentVideo.id, 20)
     }
 }

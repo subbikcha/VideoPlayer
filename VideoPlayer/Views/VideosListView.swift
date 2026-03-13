@@ -11,12 +11,15 @@ struct VideosListView: View {
     @StateObject var viewModel: VideoListViewModel = VideoListViewModel()
     @EnvironmentObject var coordinator: NavigationCoordinator
     
-    let gridItems: [GridItem] = [.init(.flexible()), .init(.flexible()), .init(.flexible())]
+    let gridItems: [GridItem] = Array(
+        repeating: .init(.flexible()),
+        count: Layout.gridColumnCount
+    )
     
     var body: some View {
         VStack {
             
-            if viewModel.loading {
+            if viewModel.isLoading {
                 
                 ProgressView()
                 
@@ -51,8 +54,8 @@ struct VideosListView: View {
         ScrollView {
             LazyVGrid(columns: gridItems) {
                 ForEach(Array(viewModel.videos.enumerated()), id: \.element.id) { index, video in
-                    listItemView(thumbNail: video.image,
-                                 videoGrapherName: video.user.name,
+                    listItemView(thumbnailURL: video.image,
+                                 videographerName: video.user.name,
                                  duration: video.duration,
                                  index: index)
                     .onAppear {
@@ -72,7 +75,7 @@ struct VideosListView: View {
                     Button("Retry") {
                         Task {
                             await viewModel.loadMoreIfNeeded(
-                                index: viewModel.videos.count - 2
+                                index: viewModel.videos.count - Constants.paginationPrefetchOffset
                             )
                         }
                     }
@@ -80,18 +83,25 @@ struct VideosListView: View {
                 .padding()
             }
         }
-        .padding(.horizontal, 6)
+        .padding(.horizontal, Layout.horizontalPadding)
     }
     
     @ViewBuilder
-    func listItemView(thumbNail: URL, videoGrapherName: String, duration: Int, index: Int) -> some View {
-        VideosListItemView(thumbNail: thumbNail,
-                           videoGrapherName: videoGrapherName,
+    func listItemView(thumbnailURL: URL, videographerName: String, duration: Int, index: Int) -> some View {
+        VideosListItemView(thumbnailURL: thumbnailURL,
+                           videographerName: videographerName,
                            duration: duration)
         .onTapGesture {
             let videosForPlayer = viewModel.videos
             coordinator.goToPlayVideoPage(videoList: videosForPlayer, selectedIndex: index)
         }
         
+    }
+}
+
+private extension VideosListView {
+    enum Layout {
+        static let gridColumnCount = 3
+        static let horizontalPadding: CGFloat = 6
     }
 }

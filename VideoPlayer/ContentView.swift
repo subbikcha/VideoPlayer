@@ -11,7 +11,7 @@ struct ContentView: View {
     @StateObject var navigationCoordinator: NavigationCoordinator = NavigationCoordinator()
     
     var body: some View {
-        NavigationStack(path: $navigationCoordinator.paths) {
+        NavigationStack(path: $navigationCoordinator.navigationPath) {
             VideosListView()
                 .navigationDestination(for: Path.self) { path in
                     switch path {

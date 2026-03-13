@@ -19,7 +19,7 @@ struct VideoPlayerPage: View {
         VStack(spacing: 0) {
             ZStack(alignment: .bottomTrailing) {
                 VideoPlayer(player: player)
-                    .aspectRatio(16/9, contentMode: .fit)
+                    .aspectRatio(Layout.videoAspectRatio, contentMode: .fit)
                     .onAppear {
                          playCurrentVideo()
                      }
@@ -33,17 +33,44 @@ struct VideoPlayerPage: View {
                  }
 
                 toggleArrow
-                    .padding(.trailing, 16)
-                    .padding(.bottom, 16)
+                    .padding(.trailing, Layout.toggleTrailingPadding)
+                    .padding(.bottom, Layout.toggleBottomPadding)
             }
             
             if viewModel.showUpNext {
                 showUpNextView
             }
         }
-        .animation(.easeInOut(duration: 0.25), value: viewModel.showUpNext)
+        .animation(.easeInOut(duration: Layout.panelAnimationDuration), value: viewModel.showUpNext)
     }
     
+}
+
+private extension VideoPlayerPage {
+    enum Layout {
+        static let videoAspectRatio: CGFloat = 16.0 / 9.0
+        static let toggleIconSize: CGFloat = 34
+        static let toggleTrailingPadding: CGFloat = 16
+        static let toggleBottomPadding: CGFloat = 16
+        static let toggleIconBottomPadding: CGFloat = 10
+        static let panelAnimationDuration: TimeInterval = 0.25
+        static let upNextTopPadding: CGFloat = 10
+        static let loadingIndicatorScale: CGFloat = 1.5
+        static let errorSpacing: CGFloat = 10
+        static let retryHorizontalPadding: CGFloat = 20
+        static let retryVerticalPadding: CGFloat = 8
+        static let thumbnailWidth: CGFloat = 140
+        static let thumbnailHeight: CGFloat = 90
+        static let thumbnailPadding: CGFloat = 4
+        static let thumbnailCornerRadius: CGFloat = 8
+        static let thumbnailInnerCornerRadius: CGFloat = 6
+        static let highlightBorderWidth: CGFloat = 3
+        static let highlightScale: CGFloat = 1.05
+        static let carouselSpacing: CGFloat = 15
+        static let thumbnailAnimationDuration: TimeInterval = 0.2
+        static let placeholderLoadingOpacity: Double = 0.2
+        static let placeholderErrorOpacity: Double = 0.3
+    }
 }
 
 private extension VideoPlayerPage {
@@ -51,14 +78,14 @@ private extension VideoPlayerPage {
         ZStack {
             Color.black
             ProgressView()
-                .scaleEffect(1.5)
+                .scaleEffect(Layout.loadingIndicatorScale)
                 .tint(.white)
         }
-        .aspectRatio(16/9, contentMode: .fit)
+        .aspectRatio(Layout.videoAspectRatio, contentMode: .fit)
     }
     
     private var errorView: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: Layout.errorSpacing) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.largeTitle)
                 .foregroundColor(.white)
@@ -67,8 +94,8 @@ private extension VideoPlayerPage {
             Button("Retry") {
                 playCurrentVideo()
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 8)
+            .padding(.horizontal, Layout.retryHorizontalPadding)
+            .padding(.vertical, Layout.retryVerticalPadding)
             .background(.white)
             .clipShape(Capsule())
         }
@@ -83,7 +110,7 @@ private extension VideoPlayerPage {
                 .padding(.horizontal)
             nextVideosCarousel
         }
-        .padding(.top, 10)
+        .padding(.top, Layout.upNextTopPadding)
         .background(.ultraThinMaterial)
         .transition(.move(edge: .bottom))
     }
@@ -95,32 +122,32 @@ private extension VideoPlayerPage {
             Image(systemName: viewModel.showUpNext ?
                   "chevron.down.circle.fill" :
                     "chevron.up.circle.fill")
-            .font(.system(size: 34))
+            .font(.system(size: Layout.toggleIconSize))
             .foregroundColor(.white)
-            .padding(.bottom, 10)
+            .padding(.bottom, Layout.toggleIconBottomPadding)
         }
     }
     
     private var nextVideosCarousel: some View {
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 15) {
+                HStack(spacing: Layout.carouselSpacing) {
                     ForEach(Array(viewModel.nextVideos.enumerated()),
                             id: \.element.id) { index, video in
                         
                         thumbnailView(video: video)
-                            .frame(width: 140, height: 90)
-                            .padding(4)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .frame(width: Layout.thumbnailWidth, height: Layout.thumbnailHeight)
+                            .padding(Layout.thumbnailPadding)
+                            .clipShape(RoundedRectangle(cornerRadius: Layout.thumbnailCornerRadius))
                             .overlay(
-                                RoundedRectangle(cornerRadius: 8)
+                                RoundedRectangle(cornerRadius: Layout.thumbnailCornerRadius)
                                     .stroke(
                                         index == 0 ? Color.yellow : Color.clear,
-                                        lineWidth: 3
+                                        lineWidth: Layout.highlightBorderWidth
                                     )
                             )
-                            .scaleEffect(index == 0 ? 1.05 : 1.0)
-                            .animation(.easeInOut(duration: 0.2), value: index)
+                            .scaleEffect(index == 0 ? Layout.highlightScale : 1.0)
+                            .animation(.easeInOut(duration: Layout.thumbnailAnimationDuration), value: index)
                             .id(index)
                             .onTapGesture {
                                 viewModel.selectVideo(at: viewModel.currentIndex + index)
@@ -142,14 +169,14 @@ private extension VideoPlayerPage {
                     .scaledToFill()
             } else if state.isLoading {
                 ZStack {
-                    Color.gray.opacity(0.2)
+                    Color.gray.opacity(Layout.placeholderLoadingOpacity)
                     ProgressView()
                 }
             } else {
-                Color.gray.opacity(0.3)
+                Color.gray.opacity(Layout.placeholderErrorOpacity)
             }
         }
-        .clipShape(RoundedRectangle(cornerRadius: 6))
+        .clipShape(RoundedRectangle(cornerRadius: Layout.thumbnailInnerCornerRadius))
     }
 }
 

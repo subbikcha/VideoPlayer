@@ -14,14 +14,14 @@ protocol VideosRepositoryProtocol {
 
 class VideosRepository: VideosRepositoryProtocol {
     
-    var netWorkService: NetworkServiceProtocol
+    var networkService: NetworkServiceProtocol
     
-    init(netWorkService: NetworkServiceProtocol = NetworkService()) {
-        self.netWorkService = netWorkService
+    init(networkService: NetworkServiceProtocol = NetworkService()) {
+        self.networkService = networkService
     }
     
     func getVideos(pagination: PaginationParams?) async throws -> VideoResponse {
-        return try await netWorkService.get(model: VideoResponse.self,
+        return try await networkService.get(model: VideoResponse.self,
                                             headers: Endpoint.header,
                                             endpoint: Endpoint.videos(page: pagination?.page, perPage: pagination?.perPage))
     }

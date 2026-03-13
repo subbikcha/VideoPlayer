@@ -9,60 +9,63 @@ import XCTest
 @testable import VideoPlayer
 
 extension Video {
-    static func mock(id: Int) -> Video {
-        Video(
-            id: id,
-            width: 100,
-            height: 100,
-            duration: 10,
-            image: URL(string: "https://test.com")!,
-            user: User(id: 1, name: "Test"),
-            videoFiles: []
-        )
-    }
-    
     static func mock(
-        id: Int,
+        id: Int = 1,
+        width: Int = 100,
+        height: Int = 100,
+        duration: Int = 10,
+        image: URL = URL(string: "https://test.com")!,
+        user: User = User(id: 1, name: "Test"),
         videoFiles: [VideoFile] = []
     ) -> Video {
-
         Video(
             id: id,
-            width: 100,
-            height: 100,
-            duration: 10,
-            image: URL(string: "https://test.com")!,
-            user: User(id: 1, name: "Test"),
+            width: width,
+            height: height,
+            duration: duration,
+            image: image,
+            user: user,
             videoFiles: videoFiles
         )
     }
-
 }
 
 extension VideoResponse {
 
-    static func mock(videos: [Video] = [Video.mock(id: 1)]) -> VideoResponse {
-
+    static func mock(
+        page: Int = 1,
+        perPage: Int = 10,
+        videos: [Video] = [Video.mock(id: 1)],
+        totalResults: Int? = nil,
+        nextPage: String? = "https://api.test.com?page=2"
+    ) -> VideoResponse {
         VideoResponse(
-            page: 1,
-            perPage: 10,
+            page: page,
+            perPage: perPage,
             videos: videos,
-            totalResults: videos.count,
-            nextPage: "https://api.test.com?page=2"
+            totalResults: totalResults ?? videos.count,
+            nextPage: nextPage
         )
     }
 }
 
 extension VideoFile {
 
-    static func mock(quality: String) -> VideoFile {
+    static func mock(
+        id: Int = 1,
+        quality: String = Constants.preferredVideoQuality,
+        fileType: String = "video/mp4",
+        width: Int? = 100,
+        height: Int? = 100,
+        link: URL = URL(string: "https://test.com/video.mp4")!
+    ) -> VideoFile {
         VideoFile(
-            id: 1,
+            id: id,
             quality: quality,
-            fileType: "video/mp4",
-            width: 100,
-            height: 100,
-            link: URL(string: "https://test.com/video.mp4")!
+            fileType: fileType,
+            width: width,
+            height: height,
+            link: link
         )
     }
 }

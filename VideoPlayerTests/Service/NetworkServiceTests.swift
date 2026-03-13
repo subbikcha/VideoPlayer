@@ -171,6 +171,129 @@ final class NetworkServiceTests: XCTestCase {
             }
         }
     }
+
+    func testGet_NoInternetError() async {
+
+        MockURLProtocol.requestHandler = { _ in
+            throw URLError(.notConnectedToInternet)
+        }
+
+        do {
+            let _: TestModel = try await sut.get(
+                model: TestModel.self,
+                headers: [:],
+                endpoint: .mock
+            )
+            XCTFail("Expected noInternet error")
+
+        } catch {
+            XCTAssertEqual(error as? CustomError, .noInternet)
+        }
+    }
+
+    func testGet_TimeoutError() async {
+
+        MockURLProtocol.requestHandler = { _ in
+            throw URLError(.timedOut)
+        }
+
+        do {
+            let _: TestModel = try await sut.get(
+                model: TestModel.self,
+                headers: [:],
+                endpoint: .mock
+            )
+            XCTFail("Expected timeout error")
+
+        } catch {
+            XCTAssertEqual(error as? CustomError, .timeoutError)
+        }
+    }
+
+    func testGet_GenericNetworkError() async {
+
+        MockURLProtocol.requestHandler = { _ in
+            throw URLError(.cannotFindHost)
+        }
+
+        do {
+            let _: TestModel = try await sut.get(
+                model: TestModel.self,
+                headers: [:],
+                endpoint: .mock
+            )
+            XCTFail("Expected network error")
+
+        } catch {
+            guard case .networkError = error as? CustomError else {
+                XCTFail("Expected networkError, got \(error)")
+                return
+            }
+        }
+    }
+
+    func testGet_SetsHTTPMethodToGET() async throws {
+
+        let json = """
+        { "id": 1 }
+        """.data(using: .utf8)!
+
+        var capturedRequest: URLRequest?
+
+        MockURLProtocol.requestHandler = { request in
+            capturedRequest = request
+
+            let response = HTTPURLResponse(
+                url: request.url!,
+                statusCode: 200,
+                httpVersion: nil,
+                headerFields: nil
+            )!
+
+            return (response, json)
+        }
+
+        let _: TestModel = try await sut.get(
+            model: TestModel.self,
+            headers: [:],
+            endpoint: .mock
+        )
+
+        XCTAssertEqual(capturedRequest?.httpMethod, Constants.get)
+    }
+
+    func testGet_SetsHeaders() async throws {
+
+        let json = """
+        { "id": 1 }
+        """.data(using: .utf8)!
+
+        var capturedRequest: URLRequest?
+
+        MockURLProtocol.requestHandler = { request in
+            capturedRequest = request
+
+            let response = HTTPURLResponse(
+                url: request.url!,
+                statusCode: 200,
+                httpVersion: nil,
+                headerFields: nil
+            )!
+
+            return (response, json)
+        }
+
+        let _: TestModel = try await sut.get(
+            model: TestModel.self,
+            headers: [Constants.contentTypeKey: Constants.contentTypeJSON],
+            endpoint: .mock
+        )
+
+        XCTAssertEqual(
+            capturedRequest?.value(forHTTPHeaderField: Constants.contentTypeKey),
+            Constants.contentTypeJSON
+        )
+    }
 }
 
 extension NetworkServiceTests {

@@ -16,7 +16,7 @@ final class VideoRepositoryTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockNetworkService = MockNetworkService()
-        sut = VideosRepository(netWorkService: mockNetworkService)
+        sut = VideosRepository(networkService: mockNetworkService)
     }
 
     override func tearDown() {
@@ -59,7 +59,7 @@ final class VideoRepositoryTests: XCTestCase {
 
         let pageQuery = mockNetworkService.capturedEndpoint?
             .queryItems
-            .first(where: { $0.name == "page" })
+            .first(where: { $0.name == Constants.pageQueryItemKey })
 
         XCTAssertNil(pageQuery)
     }
@@ -120,11 +120,11 @@ final class VideoRepositoryTests: XCTestCase {
 
         let pageValue = mockNetworkService.capturedEndpoint?
             .queryItems
-            .first(where: { $0.name == "page" })?.value
+            .first(where: { $0.name == Constants.pageQueryItemKey })?.value
 
         let perPageValue = mockNetworkService.capturedEndpoint?
             .queryItems
-            .first(where: { $0.name == "per_page" })?.value
+            .first(where: { $0.name == Constants.perPageQueryItemKey })?.value
 
         XCTAssertEqual(pageValue, "3")
         XCTAssertEqual(perPageValue, "15")
@@ -188,5 +188,12 @@ final class VideoRepositoryTests: XCTestCase {
 
         XCTAssertNil(params?.page)
         XCTAssertNil(params?.perPage)
+    }
+
+    func testExtractPagination_NilURL() {
+
+        let params = sut.extractPagination(from: nil)
+
+        XCTAssertNil(params)
     }
 }
