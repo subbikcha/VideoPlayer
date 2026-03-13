@@ -32,7 +32,9 @@ class VideosRepository: VideosRepositoryProtocol {
             let urlString,
             let url = URL(string: urlString),
             let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        else { return nil }
+        else {
+            return nil
+        }
 
         let page = components.queryItems?
             .first(where: { $0.name == Constants.pageQueryItemKey })?

@@ -12,7 +12,11 @@ protocol NetworkServiceProtocol {
 }
 
 class NetworkService: NetworkServiceProtocol {
-    
+    private let session: URLSession
+
+    init(session: URLSession = .shared) {
+        self.session = session
+    }
     
     func get<T: Decodable>(
         model: T.Type,
@@ -50,7 +54,7 @@ extension NetworkService {
     private func performRequest(_ request: URLRequest) async throws -> (Data, URLResponse) {
         
         do {
-            return try await URLSession.shared.data(for: request)
+            return try await session.data(for: request)
         } catch let error as URLError {
             if error.code == .notConnectedToInternet {
                 throw CustomError.noInternet
