@@ -29,7 +29,7 @@ class VideoPlayerViewModel: ObservableObject {
     }
 
     var nextVideos: [Video] {
-        Array(videos[currentIndex..<videos.count])
+        return Array(videos[(currentIndex)..<videos.count])
     }
 
     func playNextVideo() {

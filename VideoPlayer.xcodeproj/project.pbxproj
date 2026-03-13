@@ -38,6 +38,7 @@
 		38CADC512F6354C800D528D1 /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CADC502F6354C800D528D1 /* NetworkServiceTests.swift */; };
 		38CADC532F6354E400D528D1 /* MockEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CADC522F6354E400D528D1 /* MockEndpoint.swift */; };
 		38D146B22F6487AF0062D8A3 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D146B12F6487AF0062D8A3 /* NavigationCoordinator.swift */; };
+		38D146B42F648F5C0062D8A3 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D146B32F648F5C0062D8A3 /* ShimmerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		38CADC502F6354C800D528D1 /* NetworkServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceTests.swift; sourceTree = "<group>"; };
 		38CADC522F6354E400D528D1 /* MockEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockEndpoint.swift; sourceTree = "<group>"; };
 		38D146B12F6487AF0062D8A3 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
+		38D146B32F648F5C0062D8A3 /* ShimmerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +227,7 @@
 		38AA7D5D2F61598200923217 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				38D146B52F648F870062D8A3 /* AccessibilityID.swift */,
 				38AA7D5E2F61598D00923217 /* Constants.swift */,
 			);
 			path = Helpers;
@@ -242,6 +245,7 @@
 		38AA7D692F61629400923217 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				38D146B32F648F5C0062D8A3 /* ShimmerView.swift */,
 				38AA7D6D2F61650200923217 /* VideosListView.swift */,
 				38AA7D732F617BF900923217 /* VideoListItemView.swift */,
 				38AA7D7A2F6181E300923217 /* VideoPlayerPage.swift */,
@@ -468,6 +472,7 @@
 				38AA7D7B2F6181E300923217 /* VideoPlayerPage.swift in Sources */,
 				38CADC372F633B9D00D528D1 /* ErrorView.swift in Sources */,
 				38AA7D632F615D1000923217 /* NetworkService.swift in Sources */,
+				38D146B42F648F5C0062D8A3 /* ShimmerView.swift in Sources */,
 				38AA7D812F61E79A00923217 /* VideoPlayerViewModel.swift in Sources */,
 				38AA7D742F617BF900923217 /* VideoListItemView.swift in Sources */,
 				38AA7D572F6157EB00923217 /* Video.swift in Sources */,

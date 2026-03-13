@@ -33,13 +33,8 @@ class VideoListViewModel: ObservableObject {
             isLoading = false
         }
         do {
-            let videosList = try await repository.getVideos(pagination: PaginationParams(page: page, perPage: perPage))
-            videos.append(contentsOf: videosList.videos)
-            let nextPageParams = repository.extractPagination(from: videosList.nextPage)
-            self.page = nextPageParams?.page
-            self.perPage = nextPageParams?.perPage
-            hasMore = videosList.nextPage != nil
-        } catch (let error) {
+            try await fetchAndAppendVideos()
+        } catch {
             showInitialError = true
             errorMessage = error.localizedDescription
         }
@@ -54,18 +49,23 @@ class VideoListViewModel: ObservableObject {
                 isNextPageLoading = false
             }
             do {
-                let videosList = try await repository.getVideos(pagination: PaginationParams(page: page, perPage: perPage))
-                videos.append(contentsOf: videosList.videos)
-                let nextPageParams = repository.extractPagination(from: videosList.nextPage)
-                self.page = nextPageParams?.page
-                self.perPage = nextPageParams?.perPage
-                hasMore = videosList.nextPage != nil
-            } catch (let error) {
+                try await fetchAndAppendVideos()
+            } catch {
                 showPaginationError = true
                 errorMessage = error.localizedDescription
             }
         }
-        
+    }
+
+    @MainActor
+    private func fetchAndAppendVideos() async throws {
+        let response = try await repository.getVideos(
+            pagination: PaginationParams(page: page, perPage: perPage)
+        )
+        videos.append(contentsOf: response.videos)
+        let nextPageParams = repository.extractPagination(from: response.nextPage)
+        page = nextPageParams?.page
+        perPage = nextPageParams?.perPage
+        hasMore = response.nextPage != nil
     }
 }
-

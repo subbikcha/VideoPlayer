@@ -15,55 +15,65 @@ struct VideosListItemView: View {
     let duration: Int
 
     var body: some View {
-            VStack(alignment: .leading, spacing: Layout.itemSpacing) {
-                ZStack(alignment: .bottomTrailing) {
-                    imageView()
-                        .clipped()
-                        .cornerRadius(Layout.cornerRadius)
-                        .frame(height: Layout.thumbnailHeight)
-                    durationBadge
-                }
+        VStack(alignment: .leading, spacing: Layout.itemSpacing) {
+            imageView()
+                .frame(height: Layout.thumbnailHeight)
+                .frame(maxWidth: .infinity)
+                .clipShape(RoundedRectangle(cornerRadius: Layout.cornerRadius))
+                .shadow(
+                    color: .black.opacity(Layout.shadowOpacity),
+                    radius: Layout.shadowRadius,
+                    x: 0,
+                    y: Layout.shadowY
+                )
 
-                Text(videographerName)
-                    .font(.caption)
-                    .bold()
-                    .lineLimit(Layout.nameLineLimit, reservesSpace: true)
-            }
-        
+            Text(videographerName)
+                .font(.caption)
+                .bold()
+                .lineLimit(Layout.nameLineLimit, reservesSpace: true)
+                .padding(.horizontal, 2)
+        }
+        .contentShape(Rectangle())
     }
     
     @MainActor
     @ViewBuilder
     func imageView() -> some View {
-        GeometryReader { geo in
+        ZStack(alignment: .bottomTrailing) {
             LazyImage(url: thumbnailURL) { state in
                 if let image = state.image {
                     image
                         .resizable()
                         .scaledToFill()
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 } else if state.isLoading {
-                    ZStack {
-                        Color.gray.opacity(Layout.placeholderLoadingOpacity)
-                        ProgressView()
-                    }
+                    ShimmerView()
                 } else {
                     Color.gray.opacity(Layout.placeholderErrorOpacity)
                 }
             }
-            .frame(width: geo.size.width, height: geo.size.height)
+            .clipped()
+            
+            durationBadge
         }
     }
 
     var durationBadge: some View {
-        Text("\(duration)s")
+        Text(formattedDuration)
             .font(.caption2)
             .bold()
             .padding(.horizontal, Layout.badgeHorizontalPadding)
             .padding(.vertical, Layout.badgeVerticalPadding)
-            .background(.black.opacity(Layout.badgeBackgroundOpacity))
+            .background(.ultraThinMaterial)
             .foregroundColor(.white)
             .clipShape(RoundedRectangle(cornerRadius: Layout.badgeCornerRadius))
             .padding(Layout.badgePadding)
+    }
+
+    private var formattedDuration: String {
+        let minutes = duration / 60
+        let seconds = duration % 60
+        return String(format: "%d:%02d", minutes, seconds)
     }
 }
 
@@ -77,8 +87,9 @@ private extension VideosListItemView {
         static let badgeHorizontalPadding: CGFloat = 8
         static let badgeVerticalPadding: CGFloat = 4
         static let badgePadding: CGFloat = 8
-        static let badgeBackgroundOpacity: Double = 0.75
-        static let placeholderLoadingOpacity: Double = 0.2
         static let placeholderErrorOpacity: Double = 0.3
+        static let shadowOpacity: Double = 0.15
+        static let shadowRadius: CGFloat = 6
+        static let shadowY: CGFloat = 3
     }
 }

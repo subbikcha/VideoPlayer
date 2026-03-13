@@ -15,14 +15,11 @@ struct VideosListView: View {
         repeating: .init(.flexible()),
         count: Layout.gridColumnCount
     )
-    
+
     var body: some View {
         VStack {
-            
             if viewModel.isLoading {
-                
-                ProgressView()
-                
+                skeletonGrid
             } else if viewModel.showInitialError {
                 
                 ErrorScreen(
@@ -34,11 +31,11 @@ struct VideosListView: View {
                 }
                 
             } else {
-                
                 listView
             }
         }
-        .ignoresSafeArea()
+        .navigationTitle("Popular Videos")
+        .navigationBarTitleDisplayMode(.large)
         .onAppear {
             if viewModel.videos.isEmpty {
                 Task {
@@ -53,20 +50,33 @@ struct VideosListView: View {
     var listView: some View {
         ScrollView {
             LazyVGrid(columns: gridItems) {
-                ForEach(Array(viewModel.videos.enumerated()), id: \.element.id) { index, video in
-                    listItemView(thumbnailURL: video.image,
-                                 videographerName: video.user.name,
-                                 duration: video.duration,
-                                 index: index)
-                    .onAppear {
-                        Task {
-                            await viewModel.loadMoreIfNeeded(index: index)
+                ForEach(viewModel.videos, id: \.id) { video in
+                    if let index = viewModel.videos.firstIndex(where: { $0.id == video.id }) {
+                        TileDropView(columnIndex: index % Layout.gridColumnCount) {
+                            listItemView(video: video)
+                        }
+                        .onTapGesture {
+                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+
+                            guard let correctIndex = viewModel.videos.firstIndex(where: { $0.id == video.id }) else { return }
+
+                            coordinator.goToPlayVideoPage(
+                                videoList: viewModel.videos,
+                                selectedIndex: correctIndex
+                            )
+                        }
+                        .onAppear {
+                            Task {
+                                await viewModel.loadMoreIfNeeded(index: index)
+                            }
                         }
                     }
                 }
             }
             if viewModel.isNextPageLoading {
-                ProgressView().listRowSeparator(.hidden)
+                ProgressView()
+                    .padding()
+                    .listRowSeparator(.hidden)
             }
             
             if viewModel.showPaginationError {
@@ -87,15 +97,29 @@ struct VideosListView: View {
     }
     
     @ViewBuilder
-    func listItemView(thumbnailURL: URL, videographerName: String, duration: Int, index: Int) -> some View {
-        VideosListItemView(thumbnailURL: thumbnailURL,
-                           videographerName: videographerName,
-                           duration: duration)
-        .onTapGesture {
-            let videosForPlayer = viewModel.videos
-            coordinator.goToPlayVideoPage(videoList: videosForPlayer, selectedIndex: index)
+    func listItemView(video: Video) -> some View {
+        VideosListItemView(thumbnailURL: video.image,
+                           videographerName: video.user.name,
+                           duration: video.duration)
+
+    }
+
+    var skeletonGrid: some View {
+        ScrollView {
+            LazyVGrid(columns: gridItems) {
+                ForEach(0..<Layout.skeletonItemCount, id: \.self) { _ in
+                    VStack(alignment: .leading, spacing: Layout.skeletonTextSpacing) {
+                        ShimmerView()
+                            .frame(height: Layout.skeletonThumbnailHeight)
+                            .cornerRadius(Layout.skeletonCornerRadius)
+                        ShimmerView()
+                            .frame(height: Layout.skeletonTextHeight)
+                            .cornerRadius(Layout.skeletonTextCornerRadius)
+                    }
+                }
+            }
         }
-        
+        .padding(.horizontal, Layout.horizontalPadding)
     }
 }
 
@@ -103,5 +127,38 @@ private extension VideosListView {
     enum Layout {
         static let gridColumnCount = 3
         static let horizontalPadding: CGFloat = 6
+        static let skeletonItemCount = 12
+        static let skeletonThumbnailHeight: CGFloat = 180
+        static let skeletonCornerRadius: CGFloat = 12
+        static let skeletonTextHeight: CGFloat = 14
+        static let skeletonTextCornerRadius: CGFloat = 4
+        static let skeletonTextSpacing: CGFloat = 6
+    }
+}
+
+private enum TileDropLayout {
+    static let dropDistance: CGFloat = 30
+    static let springResponse: Double = 0.45
+    static let springDamping: Double = 0.7
+    static let columnStaggerDelay: Double = 0.08
+}
+
+private struct TileDropView<Content: View>: View {
+    let columnIndex: Int
+    @ViewBuilder let content: Content
+    @State private var appeared = false
+
+    var body: some View {
+        content
+            .offset(y: appeared ? 0 : TileDropLayout.dropDistance)
+            .opacity(appeared ? 1 : 0)
+            .animation(
+                .spring(response: TileDropLayout.springResponse, dampingFraction: TileDropLayout.springDamping)
+                .delay(Double(columnIndex) * TileDropLayout.columnStaggerDelay),
+                value: appeared
+            )
+            .onAppear {
+                appeared = true
+            }
     }
 }
