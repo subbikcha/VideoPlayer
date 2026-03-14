@@ -118,12 +118,10 @@ UI tests use **launch argument injection** combined with `URLProtocol` stubbing 
 
 - Xcode 16+
 - iOS 17.0+
-- A Pexels API key (set in `Endpoint.header`)
 
 ## Getting Started
 
 1. Clone the repository.
 2. Open `VideoPlayer.xcodeproj` in Xcode.
-3. Add your Pexels API key to the request headers in `Endpoint.swift`.
-4. Build and run on a simulator or device.
-5. To run tests: `Cmd + U` in Xcode.
+3. Build and run on a simulator or device.
+4. To run tests: `Cmd + U` in Xcode.
