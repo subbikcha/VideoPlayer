@@ -9,6 +9,15 @@ import SwiftUI
 
 @main
 struct VideoPlayerApp: App {
+
+    init() {
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("--uitesting") {
+            URLProtocol.registerClass(StubURLProtocol.self)
+        }
+        #endif
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()

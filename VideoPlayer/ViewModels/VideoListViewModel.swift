@@ -28,6 +28,7 @@ class VideoListViewModel: ObservableObject {
     
     @MainActor
     func getVideosInitial() async {
+        resetError()
         isLoading = true
         defer {
             isLoading = false
@@ -42,6 +43,7 @@ class VideoListViewModel: ObservableObject {
     
     @MainActor
     func loadMoreIfNeeded(index: Int) async {
+        resetError()
         if index == videos.count - Constants.paginationPrefetchOffset {
             guard hasMore else { return }
             isNextPageLoading = true
@@ -56,7 +58,9 @@ class VideoListViewModel: ObservableObject {
             }
         }
     }
+}
 
+private extension VideoListViewModel {
     @MainActor
     private func fetchAndAppendVideos() async throws {
         let response = try await repository.getVideos(
@@ -67,5 +71,10 @@ class VideoListViewModel: ObservableObject {
         page = nextPageParams?.page
         perPage = nextPageParams?.perPage
         hasMore = response.nextPage != nil
+    }
+    
+    private func resetError() {
+        showInitialError = false
+        showPaginationError = false
     }
 }

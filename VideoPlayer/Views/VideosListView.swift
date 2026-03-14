@@ -94,6 +94,7 @@ struct VideosListView: View {
             }
         }
         .padding(.horizontal, Layout.horizontalPadding)
+        .accessibilityIdentifier("videosList")
     }
     
     @ViewBuilder
@@ -120,6 +121,7 @@ struct VideosListView: View {
             }
         }
         .padding(.horizontal, Layout.horizontalPadding)
+        .accessibilityIdentifier("loadingSkeleton")
     }
 }
 

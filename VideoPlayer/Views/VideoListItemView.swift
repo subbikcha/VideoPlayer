@@ -34,6 +34,7 @@ struct VideosListItemView: View {
                 .padding(.horizontal, 2)
         }
         .contentShape(Rectangle())
+        .accessibilityIdentifier("videoTile_\(videographerName)")
     }
     
     @MainActor

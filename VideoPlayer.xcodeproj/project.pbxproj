@@ -39,6 +39,7 @@
 		38CADC532F6354E400D528D1 /* MockEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CADC522F6354E400D528D1 /* MockEndpoint.swift */; };
 		38D146B22F6487AF0062D8A3 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D146B12F6487AF0062D8A3 /* NavigationCoordinator.swift */; };
 		38D146B42F648F5C0062D8A3 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D146B32F648F5C0062D8A3 /* ShimmerView.swift */; };
+		AABB00022F650000000A0002 /* StubURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB00012F650000000A0001 /* StubURLProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,7 @@
 		38CADC522F6354E400D528D1 /* MockEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockEndpoint.swift; sourceTree = "<group>"; };
 		38D146B12F6487AF0062D8A3 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
 		38D146B32F648F5C0062D8A3 /* ShimmerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
+		AABB00012F650000000A0001 /* StubURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubURLProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 				38AA7D532F6157BD00923217 /* Models */,
 				38AA7D642F615E3500923217 /* Errors */,
 				38AA7D5D2F61598200923217 /* Helpers */,
+				AABB00032F650000000A0003 /* Testing */,
 				38AA7D292F6148A900923217 /* VideoPlayerApp.swift */,
 				38AA7D2B2F6148A900923217 /* ContentView.swift */,
 				38AA7D2D2F6148AA00923217 /* Assets.xcassets */,
@@ -166,6 +169,14 @@
 				38AA7D302F6148AA00923217 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AABB00032F650000000A0003 /* Testing */ = {
+			isa = PBXGroup;
+			children = (
+				AABB00012F650000000A0001 /* StubURLProtocol.swift */,
+			);
+			path = Testing;
 			sourceTree = "<group>";
 		};
 		38AA7D392F6148AB00923217 /* VideoPlayerTests */ = {
@@ -484,6 +495,7 @@
 				38AA7D2A2F6148A900923217 /* VideoPlayerApp.swift in Sources */,
 				38AA7D662F615E4600923217 /* CustomError.swift in Sources */,
 				38AA7D5C2F61594600923217 /* Endpoint.swift in Sources */,
+				AABB00022F650000000A0002 /* StubURLProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

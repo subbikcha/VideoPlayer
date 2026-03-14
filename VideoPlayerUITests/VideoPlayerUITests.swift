@@ -1,38 +1,116 @@
-//
-//  VideoPlayerUITests.swift
-//  VideoPlayerUITests
-//
-//  Created by Subbikcha K on 11/03/26.
-//
-
 import XCTest
 
 final class VideoPlayerUITests: XCTestCase {
 
+    private var app: XCUIApplication!
+
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        app = XCUIApplication()
+        app.launchArguments = ["--uitesting"]
+        app.launch()
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        app = nil
     }
 
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
+    func testVideosListAppearsWithMockData() throws {
+        let navTitle = app.navigationBars["Popular Videos"]
+        XCTAssertTrue(navTitle.waitForExistence(timeout: 5))
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let list = app.scrollViews["videosList"]
+        XCTAssertTrue(list.waitForExistence(timeout: 5))
+        
+        XCTAssertTrue(app.staticTexts["Peter Fowler"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Joey Farina"].exists)
+        XCTAssertTrue(app.staticTexts["Ruvim Miksanskiy"].exists)
+    }
+
+    func testDurationBadgesMatchStubData() throws {
+        let list = app.scrollViews["videosList"]
+        XCTAssertTrue(list.waitForExistence(timeout: 5))
+
+        XCTAssertTrue(app.staticTexts["0:08"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["0:22"].exists)
+        XCTAssertTrue(app.staticTexts["1:07"].exists)
+    }
+
+    func testTapVideoNavigatesToPlayer() throws {
+        let tile = app.staticTexts["Peter Fowler"]
+        XCTAssertTrue(tile.waitForExistence(timeout: 5))
+        tile.tap()
+
+        let toggle = app.buttons["upNextToggle"]
+        XCTAssertTrue(
+            toggle.waitForExistence(timeout: 5),
+            "Player page should show the Up Next toggle"
+        )
+    }
+
+    func testBackNavigationReturnsToList() throws {
+        let tile = app.staticTexts["Peter Fowler"]
+        XCTAssertTrue(tile.waitForExistence(timeout: 5))
+        tile.tap()
+
+        let toggle = app.buttons["upNextToggle"]
+        XCTAssertTrue(toggle.waitForExistence(timeout: 5))
+
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+
+        let navTitle = app.navigationBars["Popular Videos"]
+        XCTAssertTrue(
+            navTitle.waitForExistence(timeout: 5),
+            "Should navigate back to Popular Videos list"
+        )
+    }
+
+    func testUpNextToggleRevealsPanel() throws {
+        let tile = app.staticTexts["Peter Fowler"]
+        XCTAssertTrue(tile.waitForExistence(timeout: 5))
+        tile.tap()
+
+        let toggle = app.buttons["upNextToggle"]
+        XCTAssertTrue(toggle.waitForExistence(timeout: 5))
+
+        let upNextLabel = app.staticTexts["Up Next"]
+        if !upNextLabel.exists {
+            toggle.tap()
+        }
+
+        XCTAssertTrue(
+            upNextLabel.waitForExistence(timeout: 3),
+            "Up Next panel should be visible after toggle"
+        )
+    }
+
+    func testUpNextToggleCollapsesPanel() throws {
+        let tile = app.staticTexts["Peter Fowler"]
+        XCTAssertTrue(tile.waitForExistence(timeout: 5))
+        tile.tap()
+
+        let toggle = app.buttons["upNextToggle"]
+        XCTAssertTrue(toggle.waitForExistence(timeout: 5))
+
+        let upNextLabel = app.staticTexts["Up Next"]
+
+        if !upNextLabel.exists {
+            toggle.tap()
+        }
+        XCTAssertTrue(upNextLabel.waitForExistence(timeout: 3))
+
+        toggle.tap()
+
+        let predicate = NSPredicate(format: "exists == false")
+        let expectation = XCTNSPredicateExpectation(predicate: predicate, object: upNextLabel)
+        let result = XCTWaiter().wait(for: [expectation], timeout: 3)
+
+        let panelGone = result == .completed
+        XCTAssertTrue(panelGone, "Up Next panel should collapse after second toggle tap")
     }
 
     func testLaunchPerformance() throws {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
             measure(metrics: [XCTApplicationLaunchMetric()]) {
                 XCUIApplication().launch()
             }

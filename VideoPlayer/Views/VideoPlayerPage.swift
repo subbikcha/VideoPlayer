@@ -130,6 +130,7 @@ private extension VideoPlayerPage {
         .padding(.bottom, Layout.upNextBottomPadding)
         .background(.ultraThinMaterial)
         .transition(.move(edge: .bottom))
+        .accessibilityIdentifier("upNextPanel")
     }
     
     private var toggleArrow: some View {
@@ -145,6 +146,7 @@ private extension VideoPlayerPage {
             .shadow(color: .black.opacity(0.5), radius: 4, x: 0, y: 2)
             .padding(.bottom, Layout.toggleIconBottomPadding)
         }
+        .accessibilityIdentifier("upNextToggle")
     }
     
     private var nextVideosCarousel: some View {

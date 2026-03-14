@@ -25,7 +25,9 @@ struct ErrorScreen: View {
             Button("Retry") {
                 retry()
             }
+            .accessibilityIdentifier("retryButton")
         }
         .padding()
+        .accessibilityIdentifier("errorScreen")
     }
 }
