@@ -153,8 +153,8 @@ final class VideoPlayerViewModelTests: XCTestCase {
 
     func testGetVideoUrl_prefersHDOverSD() {
 
-        let sdFile = VideoFile.mock(id: 1, quality: "sd", link: URL(string: "https://test.com/sd.mp4")!)
-        let hdFile = VideoFile.mock(id: 2, quality: Constants.preferredVideoQuality, link: URL(string: "https://test.com/hd.mp4")!)
+        let sdFile = VideoFile.mock(id: 1, quality: TestDefaults.sdQuality, link: TestDefaults.sdVideoURL)
+        let hdFile = VideoFile.mock(id: 2, quality: Constants.preferredVideoQuality, link: TestDefaults.hdVideoURL)
 
         let video = Video.mock(id: 1, videoFiles: [sdFile, hdFile])
 
@@ -167,7 +167,7 @@ final class VideoPlayerViewModelTests: XCTestCase {
 
     func testGetVideoUrl_fallbackToFirstVideo() {
 
-        let videoFile = VideoFile.mock(quality: "sd")
+        let videoFile = VideoFile.mock(quality: TestDefaults.sdQuality)
 
         let video = Video.mock(
             id: 1,

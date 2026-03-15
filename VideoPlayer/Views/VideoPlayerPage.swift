@@ -85,6 +85,11 @@ private extension VideoPlayerPage {
         static let placeholderErrorOpacity: Double = 0.3
         static let nameLineLimit = 1
         static let gradientWidth: CGFloat = 40
+        static let upNextTitleBottomPadding: CGFloat = 8
+        static let toggleShadowOpacity: Double = 0.5
+        static let toggleShadowRadius: CGFloat = 4
+        static let toggleShadowY: CGFloat = 2
+        static let carouselItemSpacing: CGFloat = 4
     }
 }
 
@@ -101,12 +106,12 @@ private extension VideoPlayerPage {
     
     private var errorView: some View {
         VStack(spacing: Layout.errorSpacing) {
-            Image(systemName: "exclamationmark.triangle.fill")
+                Image(systemName: Constants.SFSymbol.exclamationTriangleFill)
                 .font(.largeTitle)
                 .foregroundColor(.white)
-            Text("Failed to play video")
+            Text(Constants.Strings.failedToPlayVideo)
                 .foregroundColor(.white)
-            Button("Retry") {
+            Button(Constants.Strings.retry) {
                 playCurrentVideo()
             }
             .padding(.horizontal, Layout.retryHorizontalPadding)
@@ -120,17 +125,17 @@ private extension VideoPlayerPage {
     
     private var showUpNextView: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Up Next")
+            Text(Constants.Strings.upNext)
                 .font(.headline)
                 .padding(.horizontal)
-                .padding(.bottom, 8)
+                .padding(.bottom, Layout.upNextTitleBottomPadding)
             nextVideosCarousel
         }
         .padding(.top, Layout.upNextTopPadding)
         .padding(.bottom, Layout.upNextBottomPadding)
         .background(.ultraThinMaterial)
         .transition(.move(edge: .bottom))
-        .accessibilityIdentifier("upNextPanel")
+        .accessibilityIdentifier(Constants.AccessibilityID.upNextPanel)
     }
     
     private var toggleArrow: some View {
@@ -139,14 +144,14 @@ private extension VideoPlayerPage {
             viewModel.showUpNext.toggle()
         } label: {
             Image(systemName: viewModel.showUpNext ?
-                  "chevron.down.circle.fill" :
-                    "chevron.up.circle.fill")
+                  Constants.SFSymbol.chevronDownCircleFill :
+                    Constants.SFSymbol.chevronUpCircleFill)
             .font(.system(size: Layout.toggleIconSize))
             .foregroundColor(.white)
-            .shadow(color: .black.opacity(0.5), radius: 4, x: 0, y: 2)
+            .shadow(color: .black.opacity(Layout.toggleShadowOpacity), radius: Layout.toggleShadowRadius, x: 0, y: Layout.toggleShadowY)
             .padding(.bottom, Layout.toggleIconBottomPadding)
         }
-        .accessibilityIdentifier("upNextToggle")
+        .accessibilityIdentifier(Constants.AccessibilityID.upNextToggle)
     }
     
     private var nextVideosCarousel: some View {
@@ -177,7 +182,7 @@ private extension VideoPlayerPage {
     private func carouselItem(video: Video, index: Int) -> some View {
         let isCurrentlyPlaying = index == 0
 
-        return VStack(spacing: 4) {
+        return VStack(spacing: Layout.carouselItemSpacing) {
             thumbnailView(video: video)
                 .frame(width: Layout.thumbnailWidth, height: Layout.thumbnailImageHeight)
                 .clipShape(RoundedRectangle(cornerRadius: Layout.thumbnailCornerRadius))

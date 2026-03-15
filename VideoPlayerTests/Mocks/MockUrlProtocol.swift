@@ -22,7 +22,7 @@ class MockURLProtocol: URLProtocol {
     override func startLoading() {
 
         guard let handler = MockURLProtocol.requestHandler else {
-            fatalError("Handler not set")
+            fatalError(MockError.handlerNotSet)
         }
 
         do {

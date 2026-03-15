@@ -1,3 +1,10 @@
+//
+//  VideoPlayerUITests.swift
+//  VideoPlayerUITests
+//
+//  Created by Subbikcha K on 11/03/26.
+//
+
 import XCTest
 
 final class VideoPlayerUITests: XCTestCase {
@@ -7,7 +14,7 @@ final class VideoPlayerUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         app = XCUIApplication()
-        app.launchArguments = ["--uitesting"]
+        app.launchArguments = [Launch.uiTestingArgument]
         app.launch()
     }
 
@@ -15,99 +22,107 @@ final class VideoPlayerUITests: XCTestCase {
         app = nil
     }
 
-    func testVideosListAppearsWithMockData() throws {
-        let navTitle = app.navigationBars["Popular Videos"]
-        XCTAssertTrue(navTitle.waitForExistence(timeout: 5))
+    // MARK: - Videos List
 
-        let list = app.scrollViews["videosList"]
-        XCTAssertTrue(list.waitForExistence(timeout: 5))
-        
-        XCTAssertTrue(app.staticTexts["Peter Fowler"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["Joey Farina"].exists)
-        XCTAssertTrue(app.staticTexts["Ruvim Miksanskiy"].exists)
+    func testVideosListAppearsWithMockData() throws {
+        let navTitle = app.navigationBars[Strings.popularVideos]
+        XCTAssertTrue(navTitle.waitForExistence(timeout: Timeout.standard))
+
+        let list = app.scrollViews[AccessibilityID.videosList]
+        XCTAssertTrue(list.waitForExistence(timeout: Timeout.standard))
+
+        XCTAssertTrue(app.staticTexts[StubData.peterFowler].waitForExistence(timeout: Timeout.standard))
+        XCTAssertTrue(app.staticTexts[StubData.joeyFarina].exists)
+        XCTAssertTrue(app.staticTexts[StubData.ruvimMiksanskiy].exists)
     }
 
     func testDurationBadgesMatchStubData() throws {
-        let list = app.scrollViews["videosList"]
-        XCTAssertTrue(list.waitForExistence(timeout: 5))
+        let list = app.scrollViews[AccessibilityID.videosList]
+        XCTAssertTrue(list.waitForExistence(timeout: Timeout.standard))
 
-        XCTAssertTrue(app.staticTexts["0:08"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["0:22"].exists)
-        XCTAssertTrue(app.staticTexts["1:07"].exists)
+        XCTAssertTrue(app.staticTexts[StubData.duration8s].waitForExistence(timeout: Timeout.standard))
+        XCTAssertTrue(app.staticTexts[StubData.duration22s].exists)
+        XCTAssertTrue(app.staticTexts[StubData.duration67s].exists)
     }
 
+    // MARK: - Navigation
+
     func testTapVideoNavigatesToPlayer() throws {
-        let tile = app.staticTexts["Peter Fowler"]
-        XCTAssertTrue(tile.waitForExistence(timeout: 5))
+        let tile = app.staticTexts[StubData.peterFowler]
+        XCTAssertTrue(tile.waitForExistence(timeout: Timeout.standard))
         tile.tap()
 
-        let toggle = app.buttons["upNextToggle"]
+        let toggle = app.buttons[AccessibilityID.upNextToggle]
         XCTAssertTrue(
-            toggle.waitForExistence(timeout: 5),
+            toggle.waitForExistence(timeout: Timeout.standard),
             "Player page should show the Up Next toggle"
         )
     }
 
     func testBackNavigationReturnsToList() throws {
-        let tile = app.staticTexts["Peter Fowler"]
-        XCTAssertTrue(tile.waitForExistence(timeout: 5))
+        let tile = app.staticTexts[StubData.peterFowler]
+        XCTAssertTrue(tile.waitForExistence(timeout: Timeout.standard))
         tile.tap()
 
-        let toggle = app.buttons["upNextToggle"]
-        XCTAssertTrue(toggle.waitForExistence(timeout: 5))
+        let toggle = app.buttons[AccessibilityID.upNextToggle]
+        XCTAssertTrue(toggle.waitForExistence(timeout: Timeout.standard))
 
         app.navigationBars.buttons.element(boundBy: 0).tap()
 
-        let navTitle = app.navigationBars["Popular Videos"]
+        let navTitle = app.navigationBars[Strings.popularVideos]
         XCTAssertTrue(
-            navTitle.waitForExistence(timeout: 5),
+            navTitle.waitForExistence(timeout: Timeout.standard),
             "Should navigate back to Popular Videos list"
         )
     }
 
+    // MARK: - Up Next Panel
+
     func testUpNextToggleRevealsPanel() throws {
-        let tile = app.staticTexts["Peter Fowler"]
-        XCTAssertTrue(tile.waitForExistence(timeout: 5))
+        let tile = app.staticTexts[StubData.peterFowler]
+        XCTAssertTrue(tile.waitForExistence(timeout: Timeout.standard))
         tile.tap()
 
-        let toggle = app.buttons["upNextToggle"]
-        XCTAssertTrue(toggle.waitForExistence(timeout: 5))
+        let toggle = app.buttons[AccessibilityID.upNextToggle]
+        XCTAssertTrue(toggle.waitForExistence(timeout: Timeout.standard))
 
-        let upNextLabel = app.staticTexts["Up Next"]
+        let upNextLabel = app.staticTexts[Strings.upNext]
         if !upNextLabel.exists {
             toggle.tap()
         }
 
         XCTAssertTrue(
-            upNextLabel.waitForExistence(timeout: 3),
+            upNextLabel.waitForExistence(timeout: Timeout.short),
             "Up Next panel should be visible after toggle"
         )
     }
 
     func testUpNextToggleCollapsesPanel() throws {
-        let tile = app.staticTexts["Peter Fowler"]
-        XCTAssertTrue(tile.waitForExistence(timeout: 5))
+        let tile = app.staticTexts[StubData.peterFowler]
+        XCTAssertTrue(tile.waitForExistence(timeout: Timeout.standard))
         tile.tap()
 
-        let toggle = app.buttons["upNextToggle"]
-        XCTAssertTrue(toggle.waitForExistence(timeout: 5))
+        let toggle = app.buttons[AccessibilityID.upNextToggle]
+        XCTAssertTrue(toggle.waitForExistence(timeout: Timeout.standard))
 
-        let upNextLabel = app.staticTexts["Up Next"]
+        let upNextLabel = app.staticTexts[Strings.upNext]
 
         if !upNextLabel.exists {
             toggle.tap()
         }
-        XCTAssertTrue(upNextLabel.waitForExistence(timeout: 3))
+        XCTAssertTrue(upNextLabel.waitForExistence(timeout: Timeout.short))
 
         toggle.tap()
 
         let predicate = NSPredicate(format: "exists == false")
         let expectation = XCTNSPredicateExpectation(predicate: predicate, object: upNextLabel)
-        let result = XCTWaiter().wait(for: [expectation], timeout: 3)
+        let result = XCTWaiter().wait(for: [expectation], timeout: Timeout.short)
 
         let panelGone = result == .completed
         XCTAssertTrue(panelGone, "Up Next panel should collapse after second toggle tap")
     }
+
+    // MARK: - Launch Performance
 
     func testLaunchPerformance() throws {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
@@ -115,5 +130,39 @@ final class VideoPlayerUITests: XCTestCase {
                 XCUIApplication().launch()
             }
         }
+    }
+}
+
+// MARK: - Test Constants
+
+private extension VideoPlayerUITests {
+
+    enum Launch {
+        static let uiTestingArgument = "--uitesting"
+    }
+
+    enum Timeout {
+        static let standard: TimeInterval = 5
+        static let short: TimeInterval = 3
+    }
+
+    enum Strings {
+        static let popularVideos = "Popular Videos"
+        static let upNext = "Up Next"
+    }
+
+    enum AccessibilityID {
+        static let videosList = "videosList"
+        static let upNextToggle = "upNextToggle"
+    }
+
+    enum StubData {
+        static let peterFowler = "Peter Fowler"
+        static let joeyFarina = "Joey Farina"
+        static let ruvimMiksanskiy = "Ruvim Miksanskiy"
+
+        static let duration8s = "0:08"
+        static let duration22s = "0:22"
+        static let duration67s = "1:07"
     }
 }

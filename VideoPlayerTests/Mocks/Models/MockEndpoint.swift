@@ -9,11 +9,12 @@ import XCTest
 @testable import VideoPlayer
 
 extension Endpoint {
+    static let mockPath = "/test"
+
     static var mock: Endpoint {
         Endpoint(
-            path: "/test",
+            path: mockPath,
             queryItems: []
         )
     }
 }
-

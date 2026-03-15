@@ -117,7 +117,7 @@ final class VideoListViewModelTests: XCTestCase {
 
         await sut.getVideosInitial()
 
-        mockRepository.error = CustomError.serverError(500)
+        mockRepository.error = CustomError.serverError(TestHTTPStatus.internalServerError)
 
         sut.hasMore = true
 
@@ -197,11 +197,17 @@ final class VideoListViewModelTests: XCTestCase {
 
         await sut.getVideosInitial()
 
-        mockRepository.error = CustomError.serverError(500)
+        mockRepository.error = CustomError.serverError(TestHTTPStatus.internalServerError)
         sut.hasMore = true
 
         await sut.loadMoreIfNeeded(index: sut.videos.count - Constants.paginationPrefetchOffset)
 
         XCTAssertFalse(sut.isNextPageLoading)
+    }
+}
+
+private extension VideoListViewModelTests {
+    enum TestHTTPStatus {
+        static let internalServerError = 500
     }
 }

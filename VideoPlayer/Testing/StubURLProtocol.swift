@@ -16,9 +16,9 @@ final class StubURLProtocol: URLProtocol {
         let data = json.data(using: .utf8)!
         let response = HTTPURLResponse(
             url: request.url!,
-            statusCode: 200,
+            statusCode: Constants.httpStatusOK,
             httpVersion: nil,
-            headerFields: ["Content-Type": "application/json"]
+            headerFields: [Constants.contentTypeKey: Constants.contentTypeJSON]
         )!
 
         client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)

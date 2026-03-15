@@ -34,7 +34,7 @@ final class VideoRepositoryTests: XCTestCase {
             perPage: 12,
             videos: expectedVideos,
             totalResults: 15,
-            nextPage: "https://api.test.com?page=2"
+            nextPage: TestDefaults.nextPageURL
         )
 
         mockNetworkService.result = .success(mockResponse)
@@ -79,13 +79,13 @@ final class VideoRepositoryTests: XCTestCase {
 
     func testGetVideos_ServerError() async {
 
-        mockNetworkService.result = .failure(CustomError.serverError(500))
+        mockNetworkService.result = .failure(CustomError.serverError(TestHTTPStatus.internalServerError))
 
         do {
             _ = try await sut.getVideos(pagination: nil)
             XCTFail("Expected error")
         } catch {
-            XCTAssertEqual(error as? CustomError, .serverError(500))
+            XCTAssertEqual(error as? CustomError, .serverError(TestHTTPStatus.internalServerError))
         }
     }
 
@@ -132,7 +132,7 @@ final class VideoRepositoryTests: XCTestCase {
 
     func testExtractPagination_ValidURL() {
 
-        let url = "https://api.pexels.com/v1/videos/popular?page=3&per_page=15"
+        let url = PaginationURL.validWithPageAndPerPage
 
         let params = sut.extractPagination(from: url)
 
@@ -142,7 +142,7 @@ final class VideoRepositoryTests: XCTestCase {
 
     func testExtractPagination_MissingParams() {
 
-        let url = "https://api.pexels.com/v1/videos/popular"
+        let url = PaginationURL.noParams
 
         let params = sut.extractPagination(from: url)
 
@@ -152,7 +152,7 @@ final class VideoRepositoryTests: XCTestCase {
 
     func testExtractPagination_OnlyPage() {
 
-        let url = "https://api.pexels.com/videos/popular?page=5"
+        let url = PaginationURL.onlyPage
 
         let params = sut.extractPagination(from: url)
 
@@ -162,7 +162,7 @@ final class VideoRepositoryTests: XCTestCase {
 
     func testExtractPagination_OnlyPerPage() {
 
-        let url = "https://api.pexels.com/videos/popular?per_page=20"
+        let url = PaginationURL.onlyPerPage
 
         let params = sut.extractPagination(from: url)
 
@@ -172,7 +172,7 @@ final class VideoRepositoryTests: XCTestCase {
 
     func testExtractPagination_ReversedOrder() {
 
-        let url = "https://api.pexels.com/videos/popular?per_page=15&page=3"
+        let url = PaginationURL.reversedOrder
 
         let params = sut.extractPagination(from: url)
 
@@ -182,7 +182,7 @@ final class VideoRepositoryTests: XCTestCase {
 
     func testExtractPagination_InvalidQueryValues() {
 
-        let url = "https://api.pexels.com/videos/popular?page=abc&per_page=xyz"
+        let url = PaginationURL.invalidValues
 
         let params = sut.extractPagination(from: url)
 
@@ -195,5 +195,21 @@ final class VideoRepositoryTests: XCTestCase {
         let params = sut.extractPagination(from: nil)
 
         XCTAssertNil(params)
+    }
+}
+
+private extension VideoRepositoryTests {
+
+    enum TestHTTPStatus {
+        static let internalServerError = 500
+    }
+
+    enum PaginationURL {
+        static let validWithPageAndPerPage = "https://api.pexels.com/v1/videos/popular?page=3&per_page=15"
+        static let noParams = "https://api.pexels.com/v1/videos/popular"
+        static let onlyPage = "https://api.pexels.com/videos/popular?page=5"
+        static let onlyPerPage = "https://api.pexels.com/videos/popular?per_page=20"
+        static let reversedOrder = "https://api.pexels.com/videos/popular?per_page=15&page=3"
+        static let invalidValues = "https://api.pexels.com/videos/popular?page=abc&per_page=xyz"
     }
 }

@@ -31,10 +31,10 @@ struct VideosListItemView: View {
                 .font(.caption)
                 .bold()
                 .lineLimit(Layout.nameLineLimit, reservesSpace: true)
-                .padding(.horizontal, 2)
+                .padding(.horizontal, Layout.textHorizontalPadding)
         }
         .contentShape(Rectangle())
-        .accessibilityIdentifier("videoTile_\(videographerName)")
+        .accessibilityIdentifier(Constants.AccessibilityID.videoTilePrefix + videographerName)
     }
     
     @MainActor
@@ -72,9 +72,9 @@ struct VideosListItemView: View {
     }
 
     private var formattedDuration: String {
-        let minutes = duration / 60
-        let seconds = duration % 60
-        return String(format: "%d:%02d", minutes, seconds)
+        let minutes = duration / Constants.secondsPerMinute
+        let seconds = duration % Constants.secondsPerMinute
+        return String(format: Constants.durationFormat, minutes, seconds)
     }
 }
 
@@ -89,6 +89,7 @@ private extension VideosListItemView {
         static let badgeVerticalPadding: CGFloat = 4
         static let badgePadding: CGFloat = 8
         static let placeholderErrorOpacity: Double = 0.3
+        static let textHorizontalPadding: CGFloat = 2
         static let shadowOpacity: Double = 0.15
         static let shadowRadius: CGFloat = 6
         static let shadowY: CGFloat = 3

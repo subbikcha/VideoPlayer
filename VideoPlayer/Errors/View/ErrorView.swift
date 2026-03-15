@@ -14,20 +14,26 @@ struct ErrorScreen: View {
 
     var body: some View {
 
-        VStack(spacing: 16) {
+        VStack(spacing: Layout.spacing) {
 
-            Image(systemName: "wifi.slash")
+            Image(systemName: Constants.SFSymbol.wifiSlash)
                 .font(.largeTitle)
 
             Text(message)
                 .multilineTextAlignment(.center)
 
-            Button("Retry") {
+            Button(Constants.Strings.retry) {
                 retry()
             }
-            .accessibilityIdentifier("retryButton")
+            .accessibilityIdentifier(Constants.AccessibilityID.retryButton)
         }
         .padding()
-        .accessibilityIdentifier("errorScreen")
+        .accessibilityIdentifier(Constants.AccessibilityID.errorScreen)
+    }
+}
+
+private extension ErrorScreen {
+    enum Layout {
+        static let spacing: CGFloat = 16
     }
 }

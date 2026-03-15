@@ -39,7 +39,7 @@ final class NetworkServiceTests: XCTestCase {
 
             let response = HTTPURLResponse(
                 url: request.url!,
-                statusCode: 200,
+                statusCode: HTTPStatus.ok,
                 httpVersion: nil,
                 headerFields: nil
             )!
@@ -63,7 +63,7 @@ final class NetworkServiceTests: XCTestCase {
 
             let response = HTTPURLResponse(
                 url: request.url!,
-                statusCode: 404,
+                statusCode: HTTPStatus.notFound,
                 httpVersion: nil,
                 headerFields: nil
             )!
@@ -80,7 +80,7 @@ final class NetworkServiceTests: XCTestCase {
             XCTFail("Expected error")
 
         } catch {
-            XCTAssertEqual(error as? CustomError, .clientError(404))
+            XCTAssertEqual(error as? CustomError, .clientError(HTTPStatus.notFound))
         }
     }
 
@@ -90,7 +90,7 @@ final class NetworkServiceTests: XCTestCase {
 
             let response = HTTPURLResponse(
                 url: request.url!,
-                statusCode: 500,
+                statusCode: HTTPStatus.internalServerError,
                 httpVersion: nil,
                 headerFields: nil
             )!
@@ -107,7 +107,7 @@ final class NetworkServiceTests: XCTestCase {
             XCTFail("Expected error")
 
         } catch {
-            XCTAssertEqual(error as? CustomError, .serverError(500))
+            XCTAssertEqual(error as? CustomError, .serverError(HTTPStatus.internalServerError))
         }
     }
 
@@ -141,13 +141,13 @@ final class NetworkServiceTests: XCTestCase {
 
     func testGet_DecodingError() async {
 
-        let invalidJSON = "{ invalid json }".data(using: .utf8)!
+        let invalidJSON = TestFixture.invalidJSON.data(using: .utf8)!
 
         MockURLProtocol.requestHandler = { request in
 
             let response = HTTPURLResponse(
                 url: request.url!,
-                statusCode: 200,
+                statusCode: HTTPStatus.ok,
                 httpVersion: nil,
                 headerFields: nil
             )!
@@ -234,9 +234,7 @@ final class NetworkServiceTests: XCTestCase {
 
     func testGet_SetsHTTPMethodToGET() async throws {
 
-        let json = """
-        { "id": 1 }
-        """.data(using: .utf8)!
+        let json = TestFixture.minimalJSON.data(using: .utf8)!
 
         var capturedRequest: URLRequest?
 
@@ -245,7 +243,7 @@ final class NetworkServiceTests: XCTestCase {
 
             let response = HTTPURLResponse(
                 url: request.url!,
-                statusCode: 200,
+                statusCode: HTTPStatus.ok,
                 httpVersion: nil,
                 headerFields: nil
             )!
@@ -264,9 +262,7 @@ final class NetworkServiceTests: XCTestCase {
 
     func testGet_SetsHeaders() async throws {
 
-        let json = """
-        { "id": 1 }
-        """.data(using: .utf8)!
+        let json = TestFixture.minimalJSON.data(using: .utf8)!
 
         var capturedRequest: URLRequest?
 
@@ -275,7 +271,7 @@ final class NetworkServiceTests: XCTestCase {
 
             let response = HTTPURLResponse(
                 url: request.url!,
-                statusCode: 200,
+                statusCode: HTTPStatus.ok,
                 httpVersion: nil,
                 headerFields: nil
             )!
@@ -293,6 +289,22 @@ final class NetworkServiceTests: XCTestCase {
             capturedRequest?.value(forHTTPHeaderField: Constants.contentTypeKey),
             Constants.contentTypeJSON
         )
+    }
+}
+
+// MARK: - Test Constants
+
+private extension NetworkServiceTests {
+
+    enum HTTPStatus {
+        static let ok = 200
+        static let notFound = 404
+        static let internalServerError = 500
+    }
+
+    enum TestFixture {
+        static let minimalJSON = #"{ "id": 1 }"#
+        static let invalidJSON = "{ invalid json }"
     }
 }
 

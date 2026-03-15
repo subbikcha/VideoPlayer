@@ -12,7 +12,7 @@ struct VideoPlayerApp: App {
 
     init() {
         #if DEBUG
-        if ProcessInfo.processInfo.arguments.contains("--uitesting") {
+        if ProcessInfo.processInfo.arguments.contains(Constants.launchArgumentUITesting) {
             URLProtocol.registerClass(StubURLProtocol.self)
         }
         #endif

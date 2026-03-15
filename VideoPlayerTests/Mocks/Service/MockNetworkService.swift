@@ -30,8 +30,13 @@ class MockNetworkService: NetworkServiceProtocol {
             throw error
 
         case .none:
-            fatalError("Mock result not set")
+            fatalError(MockError.resultNotSet)
         }
     }
+}
+
+enum MockError {
+    static let resultNotSet = "Mock result not set"
+    static let handlerNotSet = "Handler not set"
 }
 

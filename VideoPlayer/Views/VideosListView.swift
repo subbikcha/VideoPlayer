@@ -34,7 +34,7 @@ struct VideosListView: View {
                 listView
             }
         }
-        .navigationTitle("Popular Videos")
+        .navigationTitle(Constants.Strings.popularVideos)
         .navigationBarTitleDisplayMode(.large)
         .onAppear {
             if viewModel.videos.isEmpty {
@@ -81,8 +81,8 @@ struct VideosListView: View {
             
             if viewModel.showPaginationError {
                 VStack {
-                    Text("Failed to load more videos")
-                    Button("Retry") {
+                    Text(Constants.Strings.failedToLoadMore)
+                    Button(Constants.Strings.retry) {
                         Task {
                             await viewModel.loadMoreIfNeeded(
                                 index: viewModel.videos.count - Constants.paginationPrefetchOffset
@@ -94,7 +94,7 @@ struct VideosListView: View {
             }
         }
         .padding(.horizontal, Layout.horizontalPadding)
-        .accessibilityIdentifier("videosList")
+        .accessibilityIdentifier(Constants.AccessibilityID.videosList)
     }
     
     @ViewBuilder
@@ -121,7 +121,7 @@ struct VideosListView: View {
             }
         }
         .padding(.horizontal, Layout.horizontalPadding)
-        .accessibilityIdentifier("loadingSkeleton")
+        .accessibilityIdentifier(Constants.AccessibilityID.loadingSkeleton)
     }
 }
 
